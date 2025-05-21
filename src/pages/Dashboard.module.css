@@ -1,0 +1,134 @@
+.header {
+  margin: 30px;
+  display: flex;
+  border: 1px solid #e2e2e2;
+  background-color: #fff;
+  height: 68px;
+  border-radius: 15px;
+}
+.search {
+  width: 80%;
+  line-height: 68px;
+}
+
+.search button {
+  display: inline-block;
+  margin-top: auto;
+  background-color: #fff;
+  border: none;
+}
+
+.search button img {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.search input {
+  height: 53px;
+  font-size: 20px;
+  margin-right: 15px;
+  border: none;
+  outline: none;
+}
+
+.admin {
+  display: flex;
+}
+
+.admin img {
+  border-right: 1px solid #e2e2e2;
+  padding-right: 5px;
+  display: inline-block;
+  margin: auto 30px;
+  width: 48px;
+  height: 48px;
+}
+
+.admin div {
+  font: 18px;
+  margin: auto 0;
+}
+
+.productManage {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 40px 0;
+}
+
+.productManage_title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.productManage_title h3 {
+  font-size: 24px;
+  margin-right: 10px;
+}
+.productManage_title img {
+  width: 30px;
+}
+
+.productManage_button {
+  width: 132px;
+  height: 45px;
+  background-color: #55a3f0;
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+}
+
+table {
+  width: 1120px;
+  margin: 30px;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+table thead {
+  background-color: #f2f2f2;
+  height: 70px;
+  border-radius: 15px;
+}
+
+table thead th {
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+table thead th:first-child {
+  border-top-right-radius: 12px;
+}
+
+table thead th:last-child {
+  border-top-left-radius: 12px;
+}
+
+tbody tr {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+tbody td {
+  padding: 12px;
+  text-align: center;
+}
+.editIcon {
+  display: inline-block;
+  margin: 20px;
+}
+
+.editIcon svg {
+  width: 20px;
+  height: 20px;
+  color: #2dc65b;
+}
+
+.trashIcon svg {
+  width: 20px;
+  height: 20px;
+  color: red;
+}
