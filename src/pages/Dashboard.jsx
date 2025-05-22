@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Dashboard.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../services/products";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addProduct, editProduct, getProducts } from "../services/products";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
@@ -10,32 +11,48 @@ import AddEditeModal from "../components/AddEditeModal";
 function Dashboard() {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editProduct, setEditProduct] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
   });
 
-  console.log(data);
-
   const searchHandler = () => {};
 
   const EditHandler = (product) => {
-    setEditProduct(product);
+    setEditingProduct(product);
     setIsModalOpen(true);
   };
 
+  const addProductMutate = useMutation({
+    mutationFn: addProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      setIsModalOpen(false);
+    },
+  });
+  const editeProductMutate = useMutation({
+    mutationFn: ({ id, data }) => editProduct(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      setIsModalOpen(false);
+    },
+  });
+
   const CreateProductHandler = () => {
-    setEditProduct(null);
+    setEditingProduct(null);
     setIsModalOpen(true);
   };
 
   const submitModalHandler = (formData) => {
-    if (editProduct) {
-      console.log("بروزرسانی", formData);
+    if (editingProduct) {
+      editeProductMutate.mutate({ id: editingProduct.id, data: formData });
+      console.log("ویرایش موفق", formData);
     } else {
-      console.log("افزودن", formData);
+      addProductMutate.mutate(formData);
     }
     setIsModalOpen(false);
   };
@@ -131,7 +148,7 @@ function Dashboard() {
       <AddEditeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        product={editProduct || {}}
+        product={editingProduct || {}}
         submitModalHandler={submitModalHandler}
       />
     </>
