@@ -53,6 +53,7 @@ function Dashboard() {
       console.log("ویرایش موفق", formData);
     } else {
       addProductMutate.mutate(formData);
+      console.log("اضافه کردن محصول", formData);
     }
     setIsModalOpen(false);
   };
