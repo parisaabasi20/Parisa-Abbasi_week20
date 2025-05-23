@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import styles from "./Dashboard.module.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addProduct, editProduct, getProducts } from "../services/products";
+import {
+  addProduct,
+  deleteProduct,
+  editProduct,
+  getProducts,
+} from "../services/products";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import AddEditeModal from "../components/AddEditeModal";
+import DeleteModal from "../components/DeleteModal";
 
 function Dashboard() {
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [deletingProduct, setDeletingProduct] = useState(null);
 
   const queryClient = useQueryClient();
 
@@ -56,6 +64,25 @@ function Dashboard() {
       console.log("اضافه کردن محصول", formData);
     }
     setIsModalOpen(false);
+  };
+
+  const deleteProductMutate = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      setIsDeleteModal(false);
+    },
+  });
+
+  const confirmDeleteHandler = () => {
+    if (!deletingProduct) return;
+    deleteProductMutate.mutate(deletingProduct.id);
+  };
+
+  const deleteHandler = (product) => {
+    setDeletingProduct(product);
+    setIsDeleteModal(true);
+    // deleteProductMutate.mutate(product.id)
   };
 
   return (
@@ -130,7 +157,10 @@ function Dashboard() {
                     >
                       <FaRegEdit />
                     </span>
-                    <span className={styles.trashIcon}>
+                    <span
+                      className={styles.trashIcon}
+                      onClick={() => deleteHandler(product)}
+                    >
                       <GoTrash />
                     </span>
                   </td>
@@ -151,6 +181,12 @@ function Dashboard() {
         onClose={() => setIsModalOpen(false)}
         product={editingProduct || {}}
         submitModalHandler={submitModalHandler}
+      />
+
+      <DeleteModal
+        isOpen={isDeleteModal}
+        onClose={() => setIsDeleteModal(false)}
+        onConfirm={confirmDeleteHandler}
       />
     </>
   );
