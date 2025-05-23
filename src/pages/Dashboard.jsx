@@ -34,13 +34,6 @@ function Dashboard() {
       )
     : data?.data;
 
-  // const searchHandler = (search) => {
-  //   const newData = data.data.filter(
-  //     (p) => p.name.toLowerCase().trim().includes(search.toLowerCase().trim())
-  //   );
-  //   return search ? newData : data.data;
-  // };
-
   const EditHandler = (product) => {
     setEditingProduct(product);
     setIsModalOpen(true);
