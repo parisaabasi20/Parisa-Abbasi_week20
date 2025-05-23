@@ -28,7 +28,18 @@ function Dashboard() {
     queryFn: getProducts,
   });
 
-  const searchHandler = () => {};
+  const filteredProduct = search
+    ? data.data.filter((p) =>
+        p.name.toLowerCase().trim().includes(search.toLowerCase().trim())
+      )
+    : data?.data;
+
+  // const searchHandler = (search) => {
+  //   const newData = data.data.filter(
+  //     (p) => p.name.toLowerCase().trim().includes(search.toLowerCase().trim())
+  //   );
+  //   return search ? newData : data.data;
+  // };
 
   const EditHandler = (product) => {
     setEditingProduct(product);
@@ -90,7 +101,7 @@ function Dashboard() {
       <div>
         <div className={styles.header}>
           <div className={styles.search}>
-            <button onClick={searchHandler}>
+            <button>
               <img src="../../public/assets/search.svg" alt="" />
             </button>
             <input
@@ -144,7 +155,7 @@ function Dashboard() {
                 </tr>
               )}
 
-              {data?.data?.map((product) => (
+              {filteredProduct?.map((product) => (
                 <tr key={product.id}>
                   <td>{product.name}</td>
                   <td>{product.quantity}</td>
