@@ -1,0 +1,32 @@
+.pagination {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.selected {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: hsl(210, 84%, 64%);
+  color: #fff;
+  border: none;
+}
+
+.notSelected {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: none;
+  color: #43434380;
+  border: 1px solid #8d8d8d80;
+}
+
+.buttonAction{
+    width: 60px;
+    height: 35px;
+    border-radius: 15px;
+    
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import styles from "./Dashboard.module.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -13,6 +14,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { GoTrash } from "react-icons/go";
 import AddEditeModal from "../components/AddEditeModal";
 import DeleteModal from "../components/DeleteModal";
+import Pagination from "../components/Pagination";
 
 function Dashboard() {
   const [search, setSearch] = useState("");
@@ -20,12 +22,19 @@ function Dashboard() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [deletingProduct, setDeletingProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const token = localStorage.getItem("token");
+  const decode = jwtDecode(token);
 
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
+    queryKey: ["products", currentPage],
+    queryFn: ({ queryKey }) => {
+      const page = queryKey[1];
+      return getProducts(page);
+    },
   });
 
   const filteredProduct = search
@@ -33,13 +42,6 @@ function Dashboard() {
         p.name.toLowerCase().trim().includes(search.toLowerCase().trim())
       )
     : data?.data;
-
-  // const searchHandler = (search) => {
-  //   const newData = data.data.filter(
-  //     (p) => p.name.toLowerCase().trim().includes(search.toLowerCase().trim())
-  //   );
-  //   return search ? newData : data.data;
-  // };
 
   const EditHandler = (product) => {
     setEditingProduct(product);
@@ -114,7 +116,7 @@ function Dashboard() {
           <div className={styles.admin}>
             <img src="../../public/assets/image.svg" alt="" />
             <div>
-              <p>میلاد اعظمی</p>
+              <p>{decode.username}</p>
               <p>مدیر</p>
             </div>
           </div>
@@ -181,9 +183,11 @@ function Dashboard() {
           </table>
         </div>
         <div>
-          <span>1</span>
-          <span>2</span>
-          <span>3</span>
+          <Pagination
+            page={currentPage}
+            setPage={setCurrentPage}
+            totalPages={data?.totalPages || 1}
+          />
         </div>
       </div>
 

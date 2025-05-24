@@ -132,3 +132,8 @@ tbody td {
   height: 20px;
   color: red;
 }
+
+.pagination{
+  text-align: center;
+  margin: 30px;
+}
